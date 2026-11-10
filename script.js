@@ -12,20 +12,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isOpened) return;
     isOpened = true;
 
-    // Fade tap hint
     tapHint.style.opacity = '0';
 
-    // Trigger flaps opening & shipping label flying off
     packageBox.classList.add('is-opening');
     packageBox.classList.add('is-open-scene');
 
-    // Pop up letter card
     setTimeout(() => {
       letterCard.classList.remove('hidden');
     }, 500);
   };
 
+  // Click & Touch events for cross-platform support
   packageBox.addEventListener('click', openPackage);
+  packageBox.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    openPackage();
+  });
+
   packageBox.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -33,14 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 2. CLICK NEXT BUTTON -> TUCK LETTER BACK & POP UP QR CODE
-  nextBtn.addEventListener('click', () => {
-    // Hide letter
+  // 2. CLICK NEXT BUTTON -> TUCK LETTER BACK & SHOW BOUQUET QR
+  const handleNext = () => {
     letterCard.classList.add('hidden');
 
-    // Show QR card
     setTimeout(() => {
       qrCard.classList.remove('hidden');
     }, 450);
+  };
+
+  nextBtn.addEventListener('click', handleNext);
+  nextBtn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    handleNext();
   });
 });
